@@ -8,7 +8,7 @@ Route::view('/', 'welcome');
 
 Route::controller(UserController::class)->group(function () {
     Route::get('/dashboard', 'index')->name('dashboard')->middleware(['auth', 'verified']);
-    // Route::get('/chat/{id}', 'userChat')->name('chat');
+    Route::get('/chat/{id}', 'userChat')->name('chat');
 });
 
 // Route::view('dashboard', 'dashboard')
