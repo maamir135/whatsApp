@@ -2,9 +2,11 @@
 
 namespace App\Livewire;
 
+use App\Events\MessageSentEvent;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
 // use Illuminate\Support\Facades\Crypt;
 use Livewire\Component;
 
@@ -52,8 +54,18 @@ class Chat extends Component
     }
 
     public function sendMessage() {
-        $this->saveMessage();
+        $sentMessage = $this->saveMessage();
+
+        $this->messages[] = $sentMessage;
+        broadcast(new MessageSentEvent($sentMessage));
         $this->message = null;
+    }
+
+    #[On('echo-private:chat-channel.{senderId},MessageSentEvent')]
+    public function listenMessage($event) {
+        $newMessage = Message::find($event['message']['id'])->load('sender:id,name', 'receiver:id,name');
+        $this->messages[] = $newMessage;
+        // dd($event);
     }
 
     public function saveMessage(){
