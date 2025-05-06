@@ -30,6 +30,8 @@ class Chat extends Component
         $this->messages = $this->getMessages();
         // dd($messages);
         $this->dispatch('messages-updated');
+
+        $this->readAllMessages();
     }
 
 
@@ -53,6 +55,13 @@ class Chat extends Component
     // user typing event 
     public function userTyping() {
         broadcast(new UserTyping($this->senderId, $this->receiverId))->toOthers();
+    }
+
+    public function readAllMessages() {
+        Message::where('sender_id', $this->receiverId)
+            ->where('receiver_id', $this->senderId)
+            ->where('is_read', false)
+            ->update(['is_read' => true]);
     }
 
     public function getUser($userId)
