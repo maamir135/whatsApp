@@ -27,12 +27,12 @@ class Message extends Model
         return $this->belongsTo(User::class, 'receiver_id', 'id'); 
     }
 
-    //    /**
-    //  * Mutator to encrypt message before saving to DB
-    //  */
-    // public function setMessageAttribute($value) {
-    //     $this->attributes['message'] = Crypt::encryptString($value);
-    // }
+       /**
+     * Mutator to encrypt message before saving to DB
+     */
+    public function setMessageAttribute($value) {
+        $this->attributes['message'] = Crypt::encryptString($value);
+    }
 
     /**
      * Accessor to decrypt message when retrieved

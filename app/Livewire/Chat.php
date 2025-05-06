@@ -5,7 +5,7 @@ namespace App\Livewire;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Crypt;
+// use Illuminate\Support\Facades\Crypt;
 use Livewire\Component;
 
 class Chat extends Component
@@ -60,7 +60,7 @@ class Chat extends Component
         return Message::create([
             'sender_id'   => $this->senderId,
             'receiver_id' => $this->receiverId,
-            'message'     => Crypt::encryptString($this->message),
+            'message'     => $this->message,
             // 'file_name',
             // 'file_original_name',
             // 'folder_path',
