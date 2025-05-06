@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
 
@@ -43,6 +44,10 @@ class Message extends Model
         } catch (\Exception $e) {
             return $value;
         }
+    }
+
+    public function getCreatedAtAttribute($value){
+        return Carbon::parse($value)->timezone('Asia/Karachi');
     }
 
 }
