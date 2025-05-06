@@ -28,6 +28,7 @@ class Chat extends Component
 
         $this->messages = $this->getMessages();
         // dd($messages);
+        $this->dispatch('messages-updated');
     }
 
 
@@ -59,6 +60,8 @@ class Chat extends Component
         $this->messages[] = $sentMessage;
         broadcast(new MessageSentEvent($sentMessage));
         $this->message = null;
+
+        $this->dispatch('messages-updated');
     }
 
     #[On('echo-private:chat-channel.{senderId},MessageSentEvent')]
