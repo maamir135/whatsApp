@@ -11,7 +11,8 @@ class userController extends Controller
     //
     public function index() {
 
-        $users = User::where('id', '!=', Auth::user()->id)->get();
+        $users = User::where('id', '!=', Auth::user()->id)->withCount(['unreadMessages'])->get();
+        // dd($users);
         return view('dashboard', compact('users'));
     }
 

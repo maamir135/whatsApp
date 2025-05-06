@@ -1,5 +1,7 @@
 <x-app-layout>
 
-    {{ $userId }}
+    {{-- {{ $userId }} --}}
+
+    @livewire('chat', ['userId' => $userId])
 
 </x-app-layout>
