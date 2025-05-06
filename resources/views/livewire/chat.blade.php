@@ -78,7 +78,7 @@
                                             stroke="#4F46E5" stroke-width="1.6" />
                                     </g>
                                 </svg>
-                                <input wire:model="message"
+                                <input id="message-input" wire:keydown="userTyping" wire:model="message"
                                     class="rounded grow shrink basis-0 text-black text-xs font-medium leading-4 focus:outline-none"
                                     placeholder="Type here...">
                             </div>
@@ -129,6 +129,24 @@
 
 <script type="module">
     let chatContainer = document.getElementById('chat-container');
+    let typing = null;
+
+    window.Echo.private(`chat-channel.{{ $senderId }}`).listen('UserTyping', (event) => {
+        console.log(event);
+        const messageInput = document.getElementById('message-input');
+        if(messageInput) {
+            messageInput.placeholder = "Typing...";
+        }
+
+        clearTimeout(typing);
+
+        typing = setTimeout(() => {
+            if(messageInput) {
+                messageInput.placeholder = "Type here...";
+            }
+
+        }, 1000);
+    })
 
     Livewire.on('messages-updated', () => {
         setTimeout(() => {

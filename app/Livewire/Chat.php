@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Events\MessageSentEvent;
+use App\Events\UserTyping;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -47,6 +48,11 @@ class Chat extends Component
                 $query->where('sender_id', $this->receiverId)
                     ->where('receiver_id', $this->senderId);
             })->get();
+    }
+
+    // user typing event 
+    public function userTyping() {
+        broadcast(new UserTyping($this->senderId, $this->receiverId))->toOthers();
     }
 
     public function getUser($userId)
