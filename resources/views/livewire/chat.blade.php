@@ -18,7 +18,7 @@
                     @foreach ($messages as $message)
                         {{-- receiver section  --}}
                         @if ($message->sender->id !== auth()->user()->id)
-                            <div class="grid pb-11">
+                            <div class="grid pb-2">
                                 <div class="flex gap-2.5 mb-4">
                                     <img src="https://pagedone.io/asset/uploads/1710412177.png" alt="Shanay image"
                                         class="w-10 h-11">

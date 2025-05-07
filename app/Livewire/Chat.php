@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Events\MessageSentEvent;
+use App\Events\UnreadMessage;
 use App\Events\UserTyping;
 use App\Models\Message;
 use App\Models\User;
@@ -74,9 +75,19 @@ class Chat extends Component
 
         $this->messages[] = $sentMessage;
         broadcast(new MessageSentEvent($sentMessage));
+
+        $unreadMessageCount = $this->getUnreadMessagesCount();
+        broadcast(new UnreadMessage($this->senderId, $this->receiverId, $unreadMessageCount))->toOthers();
+
+
         $this->message = null;
 
         $this->dispatch('messages-updated');
+    }
+
+
+    public function getUnreadMessagesCount() {
+        return Message::where('receiver_id', $this->receiverId)->where('is_read', false)->count();
     }
 
     #[On('echo-private:chat-channel.{senderId},MessageSentEvent')]
