@@ -20,6 +20,14 @@ class Message extends Model
         'is_read',
     ];
 
+    protected $appends = ['formatted_date'];
+
+    public function getFormattedDateAttribute() {
+        $date = Carbon::parse($this->created_at)->timezone('Asia/Karachi');
+        return $date->isToday() ? 'Today' : ($date->isYesterday() ? 'Yesterday' : $date->format('d-m-y'));
+    }
+
+
 
     public function sender() {
         return $this->belongsTo(User::class, 'sender_id', 'id'); 

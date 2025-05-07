@@ -31,7 +31,7 @@ class Chat extends Component
         $this->receiverId = $userId;
 
         $this->messages = $this->getMessages();
-        // dd($messages);
+        // dd($this->messages);
         $this->dispatch('messages-updated');
 
         $this->readAllMessages();
