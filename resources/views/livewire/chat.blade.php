@@ -27,11 +27,24 @@
                                             {{ $message->sender->name }}
                                         </h5>
                                         <div class="w-max grid">
-                                            <div
-                                                class="px-3.5 py-2 bg-gray-100 rounded justify-start  items-center gap-3 inline-flex">
-                                                <h5 class="text-gray-900 text-sm font-normal leading-snug">
-                                                    {{ $message->message }}</h5>
-                                            </div>
+                                            @if ($message->message)
+                                                <div
+                                                    class="px-3.5 py-2 bg-gray-100 rounded justify-start  items-center gap-3 inline-flex">
+                                                    <h5 class="text-gray-900 text-sm font-normal leading-snug">
+                                                        {{ $message->message }}</h5>
+                                                </div>
+                                            @else
+                                                @if (str_starts_with($message->file_type, 'image/'))
+                                                    <a href="{{ asset('storage/' . $message->folder_path) }}"
+                                                        target="_blank">
+                                                        <img src="{{ asset('storage/' . $message->folder_path) }}"
+                                                            class="w-30 h-20 object-cover shadow-md" />
+                                                    </a>
+                                                @else
+                                                    <span>{{ $message->file_original_name }}</span>
+                                                @endif
+                                            @endif
+
                                             <div class="justify-end items-center inline-flex mb-2.5">
                                                 <h6 class="text-gray-500 text-xs font-normal leading-4 py-1">
                                                     {{ $message->created_at->format('h:i A') }}
@@ -49,10 +62,25 @@
                                         <h5 class="text-right text-gray-900 text-sm font-semibold leading-snug pb-1">
                                             You
                                         </h5>
-                                        <div class="px-3 py-2 bg-indigo-600 rounded">
-                                            <h2 class="text-white text-sm font-normal leading-snug">
-                                                {{ $message->message }}</h2>
-                                        </div>
+
+                                        @if ($message->message)
+                                            <div class="px-3 py-2 bg-indigo-600 rounded">
+                                                <h2 class="text-white text-sm font-normal leading-snug">
+                                                    {{ $message->message }}</h2>
+                                            </div>
+                                        @else
+                                            {{-- if file type is image  --}}
+                                            @if (str_starts_with($message->file_type, 'image/'))
+                                                <a href="{{ asset('storage/' . $message->folder_path) }}"
+                                                    target="_blank">
+                                                    <img src="{{ asset('storage/' . $message->folder_path) }}"
+                                                        class="w-30 h-20 object-cover shadow-md" />
+                                                </a>
+                                            @else
+                                                <span>{{ $message->file_original_name }}</span>
+                                            @endif
+                                        @endif
+
                                         <div class="justify-start items-center inline-flex">
                                             <h3 class="text-gray-500 text-xs font-normal leading-4 py-1">
                                                 {{ $message->created_at->format('h:i A') }}</h3>
@@ -83,25 +111,29 @@
                                     placeholder="Type here...">
                             </div>
                             <div class="flex items-center gap-2">
-                                <svg class="cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="22"
-                                    height="22" viewBox="0 0 22 22" fill="none">
-                                    <g id="Attach 01">
-                                        <g id="Vector">
-                                            <path
-                                                d="M14.9332 7.79175L8.77551 14.323C8.23854 14.8925 7.36794 14.8926 6.83097 14.323C6.294 13.7535 6.294 12.83 6.83097 12.2605L12.9887 5.72925M12.3423 6.41676L13.6387 5.04176C14.7126 3.90267 16.4538 3.90267 17.5277 5.04176C18.6017 6.18085 18.6017 8.02767 17.5277 9.16676L16.2314 10.5418M16.8778 9.85425L10.72 16.3855C9.10912 18.0941 6.49732 18.0941 4.88641 16.3855C3.27549 14.6769 3.27549 11.9066 4.88641 10.198L11.0441 3.66675"
-                                                stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round"
-                                                stroke-linejoin="round" />
-                                            <path
-                                                d="M14.9332 7.79175L8.77551 14.323C8.23854 14.8925 7.36794 14.8926 6.83097 14.323C6.294 13.7535 6.294 12.83 6.83097 12.2605L12.9887 5.72925M12.3423 6.41676L13.6387 5.04176C14.7126 3.90267 16.4538 3.90267 17.5277 5.04176C18.6017 6.18085 18.6017 8.02767 17.5277 9.16676L16.2314 10.5418M16.8778 9.85425L10.72 16.3855C9.10912 18.0941 6.49732 18.0941 4.88641 16.3855C3.27549 14.6769 3.27549 11.9066 4.88641 10.198L11.0441 3.66675"
-                                                stroke="black" stroke-opacity="0.2" stroke-width="1.6"
-                                                stroke-linecap="round" stroke-linejoin="round" />
-                                            <path
-                                                d="M14.9332 7.79175L8.77551 14.323C8.23854 14.8925 7.36794 14.8926 6.83097 14.323C6.294 13.7535 6.294 12.83 6.83097 12.2605L12.9887 5.72925M12.3423 6.41676L13.6387 5.04176C14.7126 3.90267 16.4538 3.90267 17.5277 5.04176C18.6017 6.18085 18.6017 8.02767 17.5277 9.16676L16.2314 10.5418M16.8778 9.85425L10.72 16.3855C9.10912 18.0941 6.49732 18.0941 4.88641 16.3855C3.27549 14.6769 3.27549 11.9066 4.88641 10.198L11.0441 3.66675"
-                                                stroke="black" stroke-opacity="0.2" stroke-width="1.6"
-                                                stroke-linecap="round" stroke-linejoin="round" />
+                                {{-- attachement  --}}
+                                <label for="fileAttachment">
+                                    <input wire:model="file" id="fileAttachment" type="file" class="hidden">
+                                    <svg class="cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="22"
+                                        height="22" viewBox="0 0 22 22" fill="none">
+                                        <g id="Attach 01">
+                                            <g id="Vector">
+                                                <path
+                                                    d="M14.9332 7.79175L8.77551 14.323C8.23854 14.8925 7.36794 14.8926 6.83097 14.323C6.294 13.7535 6.294 12.83 6.83097 12.2605L12.9887 5.72925M12.3423 6.41676L13.6387 5.04176C14.7126 3.90267 16.4538 3.90267 17.5277 5.04176C18.6017 6.18085 18.6017 8.02767 17.5277 9.16676L16.2314 10.5418M16.8778 9.85425L10.72 16.3855C9.10912 18.0941 6.49732 18.0941 4.88641 16.3855C3.27549 14.6769 3.27549 11.9066 4.88641 10.198L11.0441 3.66675"
+                                                    stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                                <path
+                                                    d="M14.9332 7.79175L8.77551 14.323C8.23854 14.8925 7.36794 14.8926 6.83097 14.323C6.294 13.7535 6.294 12.83 6.83097 12.2605L12.9887 5.72925M12.3423 6.41676L13.6387 5.04176C14.7126 3.90267 16.4538 3.90267 17.5277 5.04176C18.6017 6.18085 18.6017 8.02767 17.5277 9.16676L16.2314 10.5418M16.8778 9.85425L10.72 16.3855C9.10912 18.0941 6.49732 18.0941 4.88641 16.3855C3.27549 14.6769 3.27549 11.9066 4.88641 10.198L11.0441 3.66675"
+                                                    stroke="black" stroke-opacity="0.2" stroke-width="1.6"
+                                                    stroke-linecap="round" stroke-linejoin="round" />
+                                                <path
+                                                    d="M14.9332 7.79175L8.77551 14.323C8.23854 14.8925 7.36794 14.8926 6.83097 14.323C6.294 13.7535 6.294 12.83 6.83097 12.2605L12.9887 5.72925M12.3423 6.41676L13.6387 5.04176C14.7126 3.90267 16.4538 3.90267 17.5277 5.04176C18.6017 6.18085 18.6017 8.02767 17.5277 9.16676L16.2314 10.5418M16.8778 9.85425L10.72 16.3855C9.10912 18.0941 6.49732 18.0941 4.88641 16.3855C3.27549 14.6769 3.27549 11.9066 4.88641 10.198L11.0441 3.66675"
+                                                    stroke="black" stroke-opacity="0.2" stroke-width="1.6"
+                                                    stroke-linecap="round" stroke-linejoin="round" />
+                                            </g>
                                         </g>
-                                    </g>
-                                </svg>
+                                    </svg>
+                                </label>
                                 <button type="submit"
                                     class="items-center flex px-3 py-2 bg-indigo-600 rounded-full shadow ">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -115,6 +147,25 @@
                                     <h3 class="text-white text-xs font-semibold leading-4 px-2">Send</h3>
                                 </button>
                             </div>
+
+                            {{-- file preview  --}}
+                            @if ($file)
+
+                                @php
+                                    $isImage = str_starts_with($file->getMimeType(), 'image/') ? true : false;
+                                @endphp
+
+                                @if ($isImage)
+                                    <img src="{{ $file->temporaryUrl() }}"
+                                        class="w-12 h-12 object-cover rounded rounded-lg border border-gray-300 shadow-md"
+                                        alt="" />
+                                @else
+                                    <span class="w-full max-w-64">{{ $file->getClientOriginalName() }}</span>
+                                @endif
+                                <button wire:click="$set('file', null)" type="button"
+                                    class="text-red-500 ms-2 text-sl">X</button>
+                                {{-- @dump($file->temporaryUrl()) --}}
+                            @endif
                         </div>
                     </form>
 
@@ -131,22 +182,24 @@
     let chatContainer = document.getElementById('chat-container');
     let typing = null;
 
-    window.Echo.private(`chat-channel.{{ $senderId }}`).listen('UserTyping', (event) => {
-        console.log(event);
-        const messageInput = document.getElementById('message-input');
-        if(messageInput) {
-            messageInput.placeholder = "Typing...";
-        }
-
-        clearTimeout(typing);
-
-        typing = setTimeout(() => {
-            if(messageInput) {
-                messageInput.placeholder = "Type here...";
+    window.Echo.private(`chat-channel.{{ $senderId }}`)
+        .listen('UserTyping', (event) => {
+            const messageInput = document.getElementById('message-input');
+            if (messageInput) {
+                messageInput.placeholder = "Typing...";
             }
 
-        }, 1000);
-    })
+            clearTimeout(typing);
+
+            typing = setTimeout(() => {
+                if (messageInput) {
+                    messageInput.placeholder = "Type here...";
+                }
+            }, 1000);
+        }).listen('MessageSentEvent', (event) => {
+            const audio = new AudioContext('{{ asset('sounds/mixkit-bell-notification-933.wav') }}');
+            audio.play();
+        });
 
     Livewire.on('messages-updated', () => {
         setTimeout(() => {
@@ -164,3 +217,4 @@
         }
     }
 </script>
+

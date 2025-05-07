@@ -60,5 +60,10 @@
                 unreadCount.classList = event.count > 0 ? 'absolute right-11 top-2 bg-red-600 text-white px-2 py-1 rounded-full text-xs font-bold' : '';
                 unreadCount.textContent = event.count > 0 ? event.count : '';
             }
+
+            if(event.count > 0) {
+                const audio = new Audio('{{ asset('sounds/mixkit-bell-notification-933.wav') }}');
+                audio.play();
+            }
         })
 </script>

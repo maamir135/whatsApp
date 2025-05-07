@@ -11,15 +11,17 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 // use Illuminate\Support\Facades\Crypt;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\WithFileUploads;
 
 class Chat extends Component
 {
-
+    use WithFileUploads;
     public $user;
     public $message;
     public $senderId;
     public $receiverId;
     public $messages;
+    public $file;
 
     
     public function mount($userId) {
@@ -81,6 +83,7 @@ class Chat extends Component
 
 
         $this->message = null;
+        $this->file = null;
 
         $this->dispatch('messages-updated');
     }
@@ -98,14 +101,28 @@ class Chat extends Component
     }
 
     public function saveMessage(){
+
+        $fileName = null;
+        $fileOriginalName = null;
+        $folderPath = null;
+        $fileType = null;
+    
+        if ($this->file) {
+            $fileName = $this->file->hashName();
+            $fileOriginalName = $this->file->getClientOriginalName();
+            $folderPath = $this->file->store('chat_files', 'public');
+            $fileType = $this->file->getMimeType();
+        }
+    
         return Message::create([
             'sender_id'   => $this->senderId,
             'receiver_id' => $this->receiverId,
             'message'     => $this->message,
-            // 'file_name',
-            // 'file_original_name',
-            // 'folder_path',
-            'is_read'=> false
+            'file_name'   => $fileName,
+            'file_original_name' => $fileOriginalName,
+            'folder_path' => $folderPath,
+            'file_type' => $fileType,
+            'is_read' => false
         ]);
     }
 
