@@ -25,7 +25,7 @@
                             <tbody>
                                 @foreach ($users as $user)
                                     <tr>
-                                        <td class="border border-gray-300 px-4 py-2">{{ $loop->index }}</td>
+                                        <td class="border border-gray-300 px-4 py-2">{{ $loop->index + 1 }}</td>
                                         <td class="border border-gray-300 px-4 py-2">{{ $user->name }}</td>
                                         <td class="border border-gray-300 px-4 py-2">{{ $user->email }}</td>
                                         <td class="border border-gray-300 px-4 py-2 relative">
@@ -54,7 +54,7 @@
 
 <script type="module">
         window.Echo.private(`unread-channel.{{ Auth::user()->id }}`).listen('UnreadMessage', (event) => {
-            console.log(event);
+            // console.log(event);
             const unreadCount = document.getElementById(`unread-count-${event.senderId}`);
             if(unreadCount) {
                 unreadCount.classList = event.count > 0 ? 'absolute right-11 top-2 bg-red-600 text-white px-2 py-1 rounded-full text-xs font-bold' : '';

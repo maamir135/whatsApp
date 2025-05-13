@@ -73,6 +73,7 @@ class Chat extends Component
     }
 
     public function sendMessage() {
+        // dd($this->message);
         $sentMessage = $this->saveMessage();
 
         $this->messages[] = $sentMessage;
